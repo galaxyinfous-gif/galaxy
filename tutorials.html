@@ -588,6 +588,46 @@
             .tutorial-video-placeholder { height: 120px; }
         }
     </style>
+
+    <!-- ===== Video modal ===== -->
+    <div id="videoModal" role="dialog" aria-modal="true" aria-label="Video player" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;padding:20px;align-items:center;justify-content:center;">
+        <div style="position:relative;width:100%;max-width:1100px;">
+            <button id="videoModalClose" aria-label="Close video" style="position:absolute;top:-44px;right:0;background:none;border:0;color:#fff;font-size:32px;cursor:pointer;line-height:1;padding:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'">&times;</button>
+            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.6);background:#000;">
+                <iframe id="videoModalFrame" src="" title="Tutorial video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        var modal = document.getElementById('videoModal');
+        var frame = document.getElementById('videoModalFrame');
+        var closeBtn = document.getElementById('videoModalClose');
+        function open(id) {
+            frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function close() {
+            frame.src = '';
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        // Hijack any link to youtube.com/watch?v=ID inside .tutorial-video-card
+        document.addEventListener('click', function(e){
+            var card = e.target.closest('a.tutorial-video-card[href*="youtube.com/watch?v="]');
+            if (!card) return;
+            var m = card.href.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+            if (!m) return;
+            e.preventDefault();
+            open(m[1]);
+        });
+        closeBtn.addEventListener('click', close);
+        modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+    })();
+    </script>
 </body>
 
 </html>
