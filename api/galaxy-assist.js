@@ -63,14 +63,23 @@ module.exports = async function handler(req, res) {
     return null;
   }
 
-  // 1) PRIMARY: Cerebras — 1M tokens/day free, fast inference
+  // 1) PRIMARY: Cerebras Qwen 3 235B — top free-tier quality, multilingual, fast
   var cerebrasText = await callOpenAICompatible(
-    'cerebras',
+    'cerebras-qwen',
     'https://api.cerebras.ai/v1/chat/completions',
     process.env.CEREBRAS_API_KEY,
-    'llama-3.3-70b'
+    'qwen-3-235b-a22b-instruct-2507'
   );
-  if (cerebrasText) return res.status(200).json({ text: cerebrasText, source: 'cerebras' });
+  if (cerebrasText) return res.status(200).json({ text: cerebrasText, source: 'cerebras-qwen' });
+
+  // 1b) Cerebras GPT-OSS 120B (different model, separate quota)
+  var cerebrasOssText = await callOpenAICompatible(
+    'cerebras-oss',
+    'https://api.cerebras.ai/v1/chat/completions',
+    process.env.CEREBRAS_API_KEY,
+    'gpt-oss-120b'
+  );
+  if (cerebrasOssText) return res.status(200).json({ text: cerebrasOssText, source: 'cerebras-oss' });
 
   // 2) FALLBACK: Groq — 100K tokens/day free
   var groqText = await callOpenAICompatible(
