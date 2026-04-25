@@ -1,6 +1,6 @@
 // Galaxy Assist — Vercel Serverless Function
-// Primary: Claude Sonnet with live web_search restricted to GHL docs
-// Fallback: Groq (free, fast, no live search)
+// Free-tier provider chain: Cerebras → Groq → Anthropic (if credit available)
+// Each provider falls through to the next on rate limit, error, or missing key
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,12 +33,67 @@ module.exports = async function handler(req, res) {
   messages.push({ role: 'user', content: message });
 
   var debugInfo = [];
-  // 1) PRIMARY: Claude Sonnet with web_search restricted to GHL docs
+
+  // Helper: call an OpenAI-compatible chat completions endpoint
+  async function callOpenAICompatible(name, url, key, model) {
+    if (!key) { debugInfo.push(name + '_no_key'); return null; }
+    try {
+      var resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: model,
+          messages: [{ role: 'system', content: systemPrompt }].concat(messages),
+          max_tokens: 1024,
+          temperature: 0.7
+        })
+      });
+      if (resp.ok) {
+        var data = await resp.json();
+        var text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        if (text) return text;
+        debugInfo.push(name + '_ok_no_text');
+      } else {
+        var err = await resp.text();
+        debugInfo.push(name + '_' + resp.status + ': ' + err.substring(0, 250));
+      }
+    } catch (e) {
+      debugInfo.push(name + '_exception: ' + e.message);
+    }
+    return null;
+  }
+
+  // 1) PRIMARY: Cerebras — 1M tokens/day free, fast inference
+  var cerebrasText = await callOpenAICompatible(
+    'cerebras',
+    'https://api.cerebras.ai/v1/chat/completions',
+    process.env.CEREBRAS_API_KEY,
+    'llama-3.3-70b'
+  );
+  if (cerebrasText) return res.status(200).json({ text: cerebrasText, source: 'cerebras' });
+
+  // 2) FALLBACK: Groq — 100K tokens/day free
+  var groqText = await callOpenAICompatible(
+    'groq',
+    'https://api.groq.com/openai/v1/chat/completions',
+    process.env.GROQ_API_KEY,
+    'llama-3.3-70b-versatile'
+  );
+  if (groqText) return res.status(200).json({ text: groqText, source: 'groq' });
+
+  // 3) Try Groq with the smaller, less-rate-limited 8B model
+  var groqSmallText = await callOpenAICompatible(
+    'groq8b',
+    'https://api.groq.com/openai/v1/chat/completions',
+    process.env.GROQ_API_KEY,
+    'llama-3.1-8b-instant'
+  );
+  if (groqSmallText) return res.status(200).json({ text: groqSmallText, source: 'groq-8b' });
+
+  // 4) LAST RESORT: Anthropic (only succeeds if user has credit)
   var anthropicKey = process.env.ANTHROPIC_API_KEY;
   if (anthropicKey) {
     try {
-      var searchAugmentedPrompt = systemPrompt + '\n\n==============================================\nLIVE DOCUMENTATION ACCESS\n==============================================\nYou have access to a web_search tool. USE IT whenever the question is about a GHL feature, setup step, troubleshooting, or anything where the answer might be in the official documentation. Search queries should include terms like "GoHighLevel" or "highlevel" to land on official docs. Prefer results from gohighlevel.com, help.gohighlevel.com, support.gohighlevel.com, ideas.gohighlevel.com, marketplace.gohighlevel.com.\n\nWhen you find an answer in the docs, write it naturally in the user\'s language (do not just paste raw search results). Cite the source URL at the end as "Fonte: <URL>" / "Source: <URL>" / "Fuente: <URL>".\n\nDo NOT search for: greetings, password help, basic FAQ that you already know from the reference above.';
-
       var antResp = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -47,29 +102,14 @@ module.exports = async function handler(req, res) {
           'content-type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1500,
-          system: searchAugmentedPrompt,
-          messages: messages,
-          tools: [{
-            type: 'web_search_20250305',
-            name: 'web_search',
-            max_uses: 3,
-            allowed_domains: [
-              'gohighlevel.com',
-              'help.gohighlevel.com',
-              'support.gohighlevel.com',
-              'ideas.gohighlevel.com',
-              'marketplace.gohighlevel.com',
-              'highlevel.com'
-            ]
-          }]
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1024,
+          system: systemPrompt,
+          messages: messages
         })
       });
-
       if (antResp.ok) {
         var antData = await antResp.json();
-        // Extract text from any text blocks (search-augmented responses can have multiple blocks)
         var antText = '';
         if (antData.content && Array.isArray(antData.content)) {
           for (var j = 0; j < antData.content.length; j++) {
@@ -78,54 +118,18 @@ module.exports = async function handler(req, res) {
             }
           }
         }
-        if (antText) return res.status(200).json({ text: antText });
-        debugInfo.push('ant_ok_no_text: ' + JSON.stringify(antData).substring(0, 300));
+        if (antText) return res.status(200).json({ text: antText, source: 'anthropic-haiku' });
+        debugInfo.push('anthropic_ok_no_text');
       } else {
         var errBody = await antResp.text();
-        console.error('Anthropic non-OK:', antResp.status, errBody.substring(0, 200));
-        debugInfo.push('ant_' + antResp.status + ': ' + errBody.substring(0, 400));
+        debugInfo.push('anthropic_' + antResp.status + ': ' + errBody.substring(0, 250));
       }
     } catch (e) {
-      console.error('Anthropic error:', e.message);
-      debugInfo.push('ant_exception: ' + e.message);
+      debugInfo.push('anthropic_exception: ' + e.message);
     }
   } else {
-    debugInfo.push('ant_no_key');
+    debugInfo.push('anthropic_no_key');
   }
 
-  // 2) FALLBACK: Groq (no live search, but fast and free)
-  var groqKey = process.env.GROQ_API_KEY;
-  if (groqKey) {
-    try {
-      var groqResp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + groqKey,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [{ role: 'system', content: systemPrompt }].concat(messages),
-          max_tokens: 1024,
-          temperature: 0.7
-        })
-      });
-
-      if (groqResp.ok) {
-        var groqData = await groqResp.json();
-        var groqText = groqData.choices && groqData.choices[0] && groqData.choices[0].message && groqData.choices[0].message.content;
-        if (groqText) return res.status(200).json({ text: groqText });
-      } else {
-        var gErr = await groqResp.text();
-        debugInfo.push('groq_' + groqResp.status + ': ' + gErr.substring(0, 400));
-      }
-    } catch (e) {
-      console.error('Groq error:', e.message);
-      debugInfo.push('groq_exception: ' + e.message);
-    }
-  } else {
-    debugInfo.push('groq_no_key');
-  }
-
-  return res.status(200).json({ error: 'AI unavailable', debug: debugInfo, debugStr: debugInfo.join(' || '), v: 'galaxy-assist-debug-v3' });
+  return res.status(200).json({ error: 'AI unavailable', debug: debugInfo });
 };
