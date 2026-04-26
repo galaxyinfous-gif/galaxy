@@ -5118,6 +5118,10 @@
   "functions": {
     "api/galaxy-assist.js": {
       "maxDuration": 60
+    },
+    "api/render-pdf.js": {
+      "maxDuration": 60,
+      "memory": 1024
     }
   }
 }
