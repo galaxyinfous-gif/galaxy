@@ -1,9 +1,6 @@
-// Render HTML → PDF via puppeteer-core + sparticuz/chromium
-// POST { html: "..." } → returns PDF binary (Content-Type: application/pdf)
-// Or POST { html: "...", base64: true } → returns { pdf: "<base64>" } so n8n can attach as binary
-
-const chromium = require('@sparticuz/chromium');
-const puppeteer = require('puppeteer-core');
+// Render HTML → PDF via PDFShift (free tier: 50 PDFs/mo, no card required)
+// Sign up at pdfshift.io and set PDFSHIFT_API_KEY env var
+// POST { html, base64?, filename? } → returns PDF binary or { pdf, filename } JSON
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,24 +17,31 @@ module.exports = async function handler(req, res) {
 
   if (!html) return res.status(400).json({ error: 'html required' });
 
-  var browser;
+  var apiKey = process.env.PDFSHIFT_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'PDFSHIFT_API_KEY not configured' });
+
   try {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
+    var pdfResp = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + Buffer.from('api:' + apiKey).toString('base64'),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        source: html,
+        format: 'A4',
+        margin: '12mm 10mm 12mm 10mm',
+        use_print: true
+      })
     });
-    var page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0', timeout: 25000 });
-    var pdfBuffer = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: { top: '12mm', right: '10mm', bottom: '12mm', left: '10mm' },
-      preferCSSPageSize: true
-    });
-    await browser.close();
-    browser = null;
+
+    if (!pdfResp.ok) {
+      var errText = await pdfResp.text();
+      return res.status(502).json({ error: 'PDFShift error', status: pdfResp.status, detail: errText.substring(0, 300) });
+    }
+
+    var arrayBuf = await pdfResp.arrayBuffer();
+    var pdfBuffer = Buffer.from(arrayBuf);
 
     if (asBase64) {
       return res.status(200).json({ pdf: pdfBuffer.toString('base64'), filename: filename });
@@ -46,8 +50,6 @@ module.exports = async function handler(req, res) {
     res.setHeader('Content-Disposition', 'attachment; filename="' + filename + '"');
     return res.status(200).send(pdfBuffer);
   } catch (e) {
-    if (browser) try { await browser.close(); } catch (_) {}
-    console.error('render-pdf error:', e.message);
     return res.status(500).json({ error: 'PDF render failed', detail: e.message });
   }
 };
