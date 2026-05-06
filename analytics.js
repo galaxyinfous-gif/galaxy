@@ -8,7 +8,7 @@
 
 (function () {
   'use strict';
-  var GA_ID = 'G-PLACEHOLDER'; // ← REPLACE THIS with your real GA4 Measurement ID
+  var GA_ID = 'G-YFDSSWQLEJ';
 
   if (!GA_ID || GA_ID === 'G-PLACEHOLDER') {
     if (window.console) console.info('[Galaxy Analytics] GA4 not configured. Edit analytics.js → set GA_ID.');
