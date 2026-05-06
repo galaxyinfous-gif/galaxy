@@ -3753,3 +3753,47 @@ h6 {
         height: 110px;
     }
 }
+/* ============================================
+   STICKY MOBILE CALL BUTTON (X01 audit item)
+   Fixed bottom-right phone CTA visible on all mobile views
+   ============================================ */
+.sticky-call-mobile {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9998;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #fff !important;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45), 0 0 0 0 rgba(22, 163, 74, 0.7);
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 26px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: stickyCallPulse 2.4s infinite;
+}
+.sticky-call-mobile:hover,
+.sticky-call-mobile:active {
+    transform: scale(1.05);
+}
+.sticky-call-mobile i {
+    font-size: 24px;
+}
+@keyframes stickyCallPulse {
+    0% { box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45), 0 0 0 0 rgba(22, 163, 74, 0.7); }
+    70% { box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45), 0 0 0 16px rgba(22, 163, 74, 0); }
+    100% { box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45), 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+@media (max-width: 768px) {
+    .sticky-call-mobile {
+        display: flex;
+    }
+    /* Avoid overlap with WhatsApp floating widget if present */
+    .sticky-call-mobile {
+        bottom: 90px;
+    }
+}
