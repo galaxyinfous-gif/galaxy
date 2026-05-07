@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://galaxyinfo.us/sitemap.xml
+Sitemap: https://galaxyinfo.us/sitemap-index.xml
