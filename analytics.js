@@ -25,7 +25,42 @@
   function gtag() { dataLayer.push(arguments); }
   window.gtag = gtag;
   gtag('js', new Date());
-  gtag('config', GA_ID, { send_page_view: true, anonymize_ip: true });
+
+  // M05 fallback: when an incoming visit has NO UTM params, infer source from
+  // document.referrer so attribution still works even if the user forgot to
+  // add UTMs to their Instagram/Facebook bio link.
+  var url = new URL(window.location.href);
+  var hasUtm = url.searchParams.has('utm_source');
+  var inferred = {};
+  if (!hasUtm && document.referrer) {
+    try {
+      var ref = new URL(document.referrer);
+      var host = ref.hostname.replace(/^www\./, '');
+      var map = {
+        'instagram.com': { utm_source: 'instagram', utm_medium: 'social' },
+        'l.instagram.com': { utm_source: 'instagram', utm_medium: 'social' },
+        'facebook.com': { utm_source: 'facebook', utm_medium: 'social' },
+        'l.facebook.com': { utm_source: 'facebook', utm_medium: 'social' },
+        'lm.facebook.com': { utm_source: 'facebook', utm_medium: 'social' },
+        'youtube.com': { utm_source: 'youtube', utm_medium: 'social' },
+        'm.youtube.com': { utm_source: 'youtube', utm_medium: 'social' },
+        'tiktok.com': { utm_source: 'tiktok', utm_medium: 'social' },
+        'wa.me': { utm_source: 'whatsapp', utm_medium: 'messaging' },
+        'whatsapp.com': { utm_source: 'whatsapp', utm_medium: 'messaging' },
+        'linkedin.com': { utm_source: 'linkedin', utm_medium: 'social' },
+        't.co': { utm_source: 'twitter', utm_medium: 'social' },
+        'google.com': { utm_source: 'google', utm_medium: 'organic' },
+        'bing.com': { utm_source: 'bing', utm_medium: 'organic' },
+        'duckduckgo.com': { utm_source: 'duckduckgo', utm_medium: 'organic' }
+      };
+      inferred = map[host] || { utm_source: host, utm_medium: 'referral' };
+    } catch (e) { /* ignore malformed referrer */ }
+  }
+
+  gtag('config', GA_ID, Object.assign({
+    send_page_view: true,
+    anonymize_ip: true
+  }, inferred));
 
   // Auto-track conversion events (M03)
   document.addEventListener('click', function (e) {
