@@ -3,214 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOP Galaxy-001 — Auditoria galaxyinfo.us · 2026-05-07</title>
+<title>SOP Galaxy-001 — galaxyinfo.us · Gap pra 100</title>
 <meta name="robots" content="noindex,nofollow">
 <style>
   * { box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; max-width: 880px; margin: 0 auto; padding: 28px 24px 60px; color: #1f2937; line-height: 1.55; background: #fff; }
-  h1 { color: #1a237e; font-size: 28px; margin: 0 0 6px; border-bottom: 3px solid #ffd700; padding-bottom: 8px; }
-  h2 { color: #1a237e; font-size: 20px; margin: 32px 0 12px; padding-bottom: 4px; border-bottom: 1px solid #e5e7eb; }
-  h3 { color: #1a237e; font-size: 16px; margin: 18px 0 8px; }
-  .meta { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
-  .score-hero { background: linear-gradient(135deg, #1a237e, #3b4bb8); color: #fff; padding: 28px 32px; border-radius: 14px; margin: 22px 0; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
-  .score-hero .big { font-size: 56px; font-weight: 900; color: #ffd700; line-height: 1; }
-  .score-hero .label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.85; margin-top: 6px; }
-  .score-hero .verdict { font-size: 14px; opacity: 0.95; margin-top: 10px; }
-  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-  .pill-green { background: #dcfce7; color: #15803d; }
-  .pill-yellow { background: #fef3c7; color: #92400e; }
-  .pill-red { background: #fee2e2; color: #b91c1c; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
-  th { background: #f3f4f6; text-align: left; padding: 10px 12px; font-weight: 600; color: #1a237e; border-bottom: 2px solid #d1d5db; }
-  td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
-  tr:hover td { background: #fafbfc; }
-  .actions-done { background: #f0fdf4; border-left: 3px solid #16a34a; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 8px 0; }
-  .actions-pending { background: #fef9c3; border-left: 3px solid #ca8a04; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 8px 0; }
-  .changes-block { background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px 20px; border-radius: 10px; margin: 12px 0; }
-  .changes-block h4 { margin: 0 0 8px; color: #1a237e; font-size: 14px; }
-  ul { margin: 6px 0 6px 20px; padding: 0; }
-  li { margin-bottom: 4px; }
-  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
-  .stat-card { background: #f8fafc; padding: 16px; border-radius: 10px; text-align: center; border-top: 3px solid #1a237e; }
-  .stat-card .num { font-size: 26px; font-weight: 900; color: #1a237e; line-height: 1; }
-  .stat-card .lbl { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
-  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; text-align: center; }
-  .print-hint { background: #fef9c3; padding: 10px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 18px; }
-  @media print {
-    body { padding: 0; max-width: none; font-size: 11pt; }
-    .print-hint { display: none; }
-    .score-hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-inside: avoid; }
-    table { page-break-inside: auto; }
-    tr { page-break-inside: avoid; }
-    h2 { page-break-after: avoid; }
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 22px 40px; color: #1f2937; line-height: 1.5; background: #fff; }
+  h1 { color: #1a237e; font-size: 22px; margin: 0 0 4px; }
+  .meta { color: #6b7280; font-size: 12px; margin-bottom: 18px; }
+  .score-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0 28px; }
+  .score-card { background: #f8fafc; border-radius: 10px; padding: 18px; text-align: center; border-top: 4px solid; }
+  .score-card.now { border-top-color: #1a237e; }
+  .score-card.gap { border-top-color: #f97316; background: #fff7ed; }
+  .score-card.goal { border-top-color: #16a34a; background: #f0fdf4; }
+  .score-card .num { font-size: 38px; font-weight: 900; line-height: 1; }
+  .score-card .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: #6b7280; margin-top: 4px; }
+  h2 { color: #1a237e; font-size: 16px; margin: 24px 0 10px; padding-bottom: 4px; border-bottom: 1px solid #e5e7eb; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f3f4f6; text-align: left; padding: 7px 10px; font-weight: 600; color: #1a237e; border-bottom: 2px solid #d1d5db; font-size: 12px; }
+  td { padding: 7px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  .pts { font-weight: 700; color: #16a34a; white-space: nowrap; }
+  .gap-item { background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 8px 0; font-size: 13px; }
+  .gap-item.red { background: #fef2f2; border-left-color: #dc2626; }
+  .gap-item h3 { margin: 0 0 4px; color: #1a237e; font-size: 14px; }
+  .gap-item .meta-line { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .gap-item .action { color: #374151; }
+  .gap-item .points { float: right; background: #16a34a; color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+  .g { background: #dcfce7; color: #15803d; }
+  .y { background: #fef3c7; color: #92400e; }
+  .r { background: #fee2e2; color: #b91c1c; }
+  .print-hint { background: #fef9c3; padding: 8px 14px; border-radius: 6px; font-size: 12px; margin-bottom: 14px; }
+  @media print { body { padding: 0; } .print-hint { display: none; } .score-card, .gap-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 </style>
 </head>
 <body>
 
-<div class="print-hint">📄 <strong>Salvar como PDF:</strong> use <code>Ctrl+P</code> (ou ⌘+P) → "Salvar como PDF". A página foi otimizada para impressão.</div>
+<div class="print-hint">📄 Ctrl+P → Salvar como PDF</div>
 
-<h1>SOP Galaxy-001 · Auditoria galaxyinfo.us</h1>
-<div class="meta">
-  <strong>Data:</strong> 2026-05-07 · <strong>Auditor:</strong> Claude Code (Opus 4.7) ·
-  <strong>Site:</strong> galaxyinfo.us · <strong>Cliente:</strong> Galaxy IT &amp; Marketing LLC
-</div>
+<h1>SOP Galaxy-001 · galaxyinfo.us</h1>
+<div class="meta">2026-05-07 · Auditor: Claude Code (Opus 4.7) · Galaxy IT &amp; Marketing LLC</div>
 
-<div class="score-hero">
-  <div>
-    <div style="font-size:14px;letter-spacing:1.5px;text-transform:uppercase;opacity:0.85;">Score Final</div>
-    <div class="verdict">Faixa: <strong>85+ → Site em ótima forma</strong>. Foco: escala. Sem necessidade de escalation.</div>
-  </div>
-  <div style="text-align:right;">
-    <div class="big">88</div>
-    <div class="label">/ 100</div>
-  </div>
-</div>
-
-<div class="stat-grid">
-  <div class="stat-card" style="border-top-color:#16a34a;"><div class="num" style="color:#15803d;">42</div><div class="lbl">Verde (2/2)</div></div>
-  <div class="stat-card" style="border-top-color:#ca8a04;"><div class="num" style="color:#92400e;">4</div><div class="lbl">Amarelo (1/2)</div></div>
-  <div class="stat-card" style="border-top-color:#dc2626;"><div class="num" style="color:#b91c1c;">2</div><div class="lbl">Vermelho (0/2)</div></div>
-  <div class="stat-card"><div class="num">2</div><div class="lbl">N/A (sem telefone)</div></div>
+<div class="score-row">
+  <div class="score-card now"><div class="num" style="color:#1a237e;">88</div><div class="lbl">hoje / 100</div></div>
+  <div class="score-card gap"><div class="num" style="color:#f97316;">12</div><div class="lbl">faltam pra 100</div></div>
+  <div class="score-card goal"><div class="num" style="color:#16a34a;">100</div><div class="lbl">meta</div></div>
 </div>
 
 <h2>Score por Seção</h2>
 <table>
-<thead><tr><th>#</th><th>Seção</th><th>Score</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>SEO Técnico</td><td><strong>10/10</strong></td><td><span class="pill pill-green">Verde</span></td></tr>
-<tr><td>2</td><td>On-Page SEO</td><td><strong>10/10</strong></td><td><span class="pill pill-green">Verde</span></td></tr>
-<tr><td>3</td><td>AEO (Answer Engine)</td><td><strong>9/10</strong></td><td><span class="pill pill-yellow">Parcial</span></td></tr>
-<tr><td>4</td><td>Local SEO + GBP</td><td><strong>7/10</strong></td><td><span class="pill pill-yellow">Parcial</span></td></tr>
-<tr><td>5</td><td>Blog + Topical Authority</td><td><strong>10/10</strong></td><td><span class="pill pill-green">Verde</span></td></tr>
-<tr><td>6</td><td>City × Service Pages</td><td><strong>10/10</strong></td><td><span class="pill pill-green">Verde</span></td></tr>
-<tr><td>7</td><td>Trust + E-E-A-T</td><td><strong>9/10</strong></td><td><span class="pill pill-yellow">Parcial</span></td></tr>
-<tr><td>8</td><td>CTAs + Lead Capture</td><td><strong>7/10*</strong></td><td><span class="pill pill-yellow">Parcial</span></td></tr>
-<tr><td>9</td><td>Tracking + Analytics</td><td><strong>10/10</strong></td><td><span class="pill pill-green">Verde</span></td></tr>
-<tr><td>10</td><td>Reviews + Reputation</td><td><strong>7/10</strong></td><td><span class="pill pill-yellow">Parcial</span></td></tr>
-</tbody>
-</table>
-<p style="font-size:12px;color:#6b7280;">*Seção 8 caiu de 9/10 → 7/10 após decisão estratégica de remover telefone como canal (X01 sticky-call e M04 call tracking ficam N/A). Ganho: foco em leads qualificados via formulário com filtro de email business.</p>
-
-<h2>O que mudou nesta sessão</h2>
-
-<div class="changes-block">
-  <h4>🚫 Telefone removido do site inteiro (decisão de canal)</h4>
-  <ul>
-    <li><strong>15.675 referências</strong> ao (774) 285-2299 limpas em 1.273 arquivos HTML</li>
-    <li>2.515 links <code>tel:</code> → <code>mailto:info@galaxyinfo.us</code></li>
-    <li>1.251 campos <code>"telephone"</code> em schema.org removidos</li>
-    <li>3.763 metas reescritas + cleanup de artifacts</li>
-    <li>11 links wa.me/17742852299 → email</li>
-    <li>Sticky-call FAB no mobile virou ✉️ envelope linkando /contact</li>
-  </ul>
-</div>
-
-<div class="changes-block">
-  <h4>📨 Formulário com filtro de email business apenas</h4>
-  <ul>
-    <li>Removidos 1.254 iframes do LeadConnector → CTA "Send a message" linkando /contact</li>
-    <li>Novo <code>/contact</code> e <code>/consultation</code>: form HTML custom (5 campos) com validação</li>
-    <li>Bloqueia: gmail, yahoo, hotmail, outlook, aol, icloud, protonmail, comcast, verizon, uol, terra, ig, globo + 30+ provedores</li>
-    <li>Bloqueia também emails descartáveis (mailinator, 10minutemail, yopmail etc.)</li>
-    <li>Novo endpoint Vercel <code>/api/submit-lead</code>: dupla validação server-side + forward pra GHL via API</li>
-    <li>Honeypot anti-bot embutido</li>
-    <li>Tracking GA4 mantido em <code>form_submit</code> com label <code>business_email_lead</code></li>
-  </ul>
-</div>
-
-<div class="changes-block">
-  <h4>🏙️ Cobertura de cidades</h4>
-  <ul>
-    <li><strong>1.248 páginas city × service</strong> ativas (415 cidades únicas × 3 serviços)</li>
-    <li>Conteúdo único por cidade: 250 palavras seed-based (overlap 8-gram caiu de 91% → 47-65%)</li>
-    <li>Cobre todos 6 estados: MA, NH, RI, CT, VT, ME</li>
-  </ul>
-</div>
-
-<div class="changes-block">
-  <h4>🤖 AEO + Schema.org</h4>
-  <ul>
-    <li>FAQPage visível na home com 6 perguntas H2 (40-60 palavras cada, 100% com números específicos)</li>
-    <li>LocalBusiness + ProfessionalService + Person founder (Luiz Alberto) schema</li>
-    <li>ai-summary, ai-purpose, ai-keywords meta em todas as 10 páginas principais</li>
-  </ul>
-</div>
-
-<div class="changes-block">
-  <h4>📝 Blog cluster (15 posts) com geo MA</h4>
-  <ul>
-    <li>Todos os 15 títulos reescritos &lt;60 chars com modificador MA/Massachusetts</li>
-    <li>Pillar: "Get More Leads for MA Home-Service Businesses" linka 7 cluster posts</li>
-    <li>Cada post tem seção "Related Articles" com 3-4 sibs + pillar + /services + /areas</li>
-    <li>Link interno blog→blog: 1 → 6 por post</li>
-  </ul>
-</div>
-
-<div class="changes-block">
-  <h4>👥 E-E-A-T (Trust)</h4>
-  <ul>
-    <li>Foto real do fundador <strong>Luiz Alberto</strong> em destaque na home</li>
-    <li>Card co-founder Rhaideline (Operations) com avatar dourado</li>
-    <li>3 sliders interativos before/after (Wolfs 0→31, Alfa 5K→56K, Mass HVAC 1→10)</li>
-    <li>Footer com 6 selos de credenciais (MA Registered LLC, GBP Verified, Insured, Bee Pro Hub Certified, etc.)</li>
-    <li>Tools &amp; Tech Partners section com 8 tiles (Google, Meta, Bee Pro Hub, Microsoft, Stripe, WhatsApp, Anthropic, n8n)</li>
-    <li>Testimonials home: 3 cards reais (Wolf's, Alfa, Mass HVAC) com VERIFIED RESULTS · GSC + GHL</li>
-  </ul>
-</div>
-
-<div class="changes-block">
-  <h4>🎯 Tracking + Reviews</h4>
-  <ul>
-    <li>GA4 G-YFDSSWQLEJ ativo em todas as páginas com 5 conversion events</li>
-    <li>Fallback de UTMs por referrer no analytics.js (Instagram, FB, YouTube, etc.)</li>
-    <li>UTM_GUIDE.md com URLs canônicas pra colocar em bios/email/EDDM</li>
-    <li>Sitemap.xml: 1.279 URLs com lastmod 2026-05-06</li>
-    <li>n8n/15-review-request.json v2: auto-envia SMS+Email via GHL Conversations API + follow-up task em 3 dias</li>
-    <li>n8n/18-speed-to-lead.json: webhook → SMS+Email+team alert em 2-8s (X05)</li>
-  </ul>
-</div>
-
-<h2>Top 5 Prioridades Pendentes</h2>
-<table>
-<thead><tr><th>#</th><th>Item</th><th>Owner</th><th>Prazo</th></tr></thead>
-<tbody>
-<tr><td>1</td><td><strong>R02 + L03 + A04 + R05:</strong> Coletar 5+ reviews reais no GBP da Galaxy IT (WhatsApp pros 7 clientes ativos com link curto pronto)</td><td>Rhaideline</td><td>7 dias</td></tr>
-<tr><td>2</td><td><strong>X05:</strong> Submeter lead-teste em /consultation com email business e cronometrar a chegada do auto-email/SMS (deve ser &lt;60s)</td><td>Luiz</td><td>24h</td></tr>
-<tr><td>3</td><td><strong>E03:</strong> Buscar nº de filing MA Corp em corp.sec.state.ma.us → me mandar pra eu colocar no footer</td><td>Luiz</td><td>24h</td></tr>
-<tr><td>4</td><td><strong>E01 (final):</strong> Foto da Rhaideline pra trocar avatar inicial "R"</td><td>Rhaideline</td><td>3 dias</td></tr>
-<tr><td>5</td><td><strong>L04:</strong> Agendar 1 GBP post semanal recorrente</td><td>Rhaideline</td><td>Recorrente</td></tr>
-</tbody>
+<tr><td>1. SEO Técnico</td><td><span class="pill g">10/10</span></td><td>2. On-Page</td><td><span class="pill g">10/10</span></td></tr>
+<tr><td>3. AEO</td><td><span class="pill y">9/10</span></td><td>4. Local + GBP</td><td><span class="pill y">7/10</span></td></tr>
+<tr><td>5. Blog</td><td><span class="pill g">10/10</span></td><td>6. City × Service</td><td><span class="pill g">10/10</span></td></tr>
+<tr><td>7. Trust E-E-A-T</td><td><span class="pill y">9/10</span></td><td>8. CTAs</td><td><span class="pill y">7/10</span></td></tr>
+<tr><td>9. Tracking</td><td><span class="pill g">10/10</span></td><td>10. Reviews</td><td><span class="pill y">7/10</span></td></tr>
 </table>
 
-<h2>Itens Críticos (0/2)</h2>
-<div class="actions-pending">
-  <strong>R02 — Review velocity ≥5/mês:</strong> Galaxy IT tem 0 reviews no Google Business Profile. Workflow <code>n8n/15-review-request.json</code> v2 está pronto e ativa a partir do próximo job-completed dos clientes. <em>Resolve em cascata A04 + R05 + L03.</em>
-</div>
-<div class="actions-pending">
-  <strong>L03 — Reviews no GBP da Galaxy:</strong> Mesmo bloqueio que R02. Ação imediata: WhatsApp pros 3 melhores clientes (Wolf's, Alfa, Mass HVAC) hoje com mensagem pronta + esboço + link curto.
+<h2>O que falta pra chegar a 100</h2>
+
+<div class="gap-item red">
+  <span class="points">+5 pts</span>
+  <h3>R02 + L03 — Reviews reais no GBP</h3>
+  <div class="meta-line">Owner: Rhaideline · Prazo: 7 dias · Resolve A04, R05, L03 em cascata</div>
+  <div class="action">Mandar WhatsApp pros 3 melhores clientes (Wolf's Siding, Alfa Painting, Mass HVAC) com link curto do Google Reviews + esboço pronto. Bee Pro Hub workflow já dispara automaticamente quando job for concluído.</div>
 </div>
 
-<h2>Próximos Passos (faixa 85+)</h2>
-<div class="actions-done">
-  <strong>Foco:</strong> escala. <ul>
-    <li>2 posts/mês mantendo cluster MA-geo</li>
-    <li>Adicionar 200 cidades extra (atual 415 → meta 615) cobrindo mais NH/RI/CT/ME/VT</li>
-    <li>Ativar GBP weekly posts</li>
-    <li>Quando chegarem 5+ reviews reais, eu adiciono <code>aggregateRating</code> + Review schema → +3 pontos (88 → 91)</li>
-    <li>Quando vier MA Corp # → footer atualizado → +1 ponto</li>
-  </ul>
+<div class="gap-item">
+  <span class="points">+1 pt</span>
+  <h3>A04 — aggregateRating no schema</h3>
+  <div class="meta-line">Owner: eu · Prazo: automático após R02</div>
+  <div class="action">Adiciono Review + aggregateRating schema na hora que tiver 5+ reviews reais no GBP. Zero ação sua.</div>
 </div>
 
-<h2>Resumo Executivo (1 parágrafo)</h2>
-<p style="background:#f0fdf4;padding:18px 22px;border-left:4px solid #16a34a;border-radius:0 10px 10px 0;font-size:14px;line-height:1.7;">
-Auditoria SOP-001 completa em galaxyinfo.us: <strong>88/100 (faixa verde, escala)</strong>. 6 das 10 seções fechadas em 10/10; 4 em parcial. Mudanças nesta sessão: NAP unificada em 1.273 arquivos com remoção total do telefone (decisão de canal — agora só formulário + email business), formulário custom com bloqueio de gmail/yahoo/hotmail/outlook/etc + endpoint Vercel <code>/api/submit-lead</code> com double-validation, FAQ visível com 6 Q&amp;A na home, foto real do founder Luiz Alberto, 3 sliders interativos before/after, n8n speed-to-lead + auto-review-request prontos. <strong>Único bloqueio para 91+:</strong> coletar 5 reviews reais no GBP — toda a infra de schema, exibição e automação já está pronta esperando os reviews chegarem.
+<div class="gap-item">
+  <span class="points">+1 pt</span>
+  <h3>R05 — Review schema na /reviews</h3>
+  <div class="meta-line">Owner: eu · Prazo: automático após R02</div>
+  <div class="action">Mesma coisa do A04 — desbloqueado pelos reviews.</div>
+</div>
+
+<div class="gap-item">
+  <span class="points">+1 pt</span>
+  <h3>E03 — Nº de filing MA Corp / EIN</h3>
+  <div class="meta-line">Owner: Luiz · Prazo: 24h</div>
+  <div class="action">Buscar em corp.sec.state.ma.us → me mandar o número → coloco no footer. Toma 5 min.</div>
+</div>
+
+<div class="gap-item">
+  <span class="points">+1 pt</span>
+  <h3>E01 — Foto da Rhaideline</h3>
+  <div class="meta-line">Owner: Rhaideline · Prazo: 3 dias</div>
+  <div class="action">Selfie ou foto profissional pra trocar o avatar inicial "R" na seção de fundadores da home.</div>
+</div>
+
+<div class="gap-item">
+  <span class="points">+1 pt</span>
+  <h3>X05 — Speed-to-lead live</h3>
+  <div class="meta-line">Owner: Luiz · Prazo: 24h</div>
+  <div class="action">Submeter um lead-teste em /consultation com email business → cronometrar SMS/email automático. Se vier &lt;60s, sobe pra 2/2. Se não vier, ativar n8n/18-speed-to-lead.json.</div>
+</div>
+
+<div class="gap-item">
+  <span class="points">+1 pt</span>
+  <h3>L04 — GBP weekly post</h3>
+  <div class="meta-line">Owner: Rhaideline · Prazo: recorrente</div>
+  <div class="action">1 post por semana no Google Business Profile (foto + 100 palavras + link).</div>
+</div>
+
+<div class="gap-item">
+  <span class="points">+2 pts</span>
+  <h3>X01 + M04 — Tracking de telefone (decisão)</h3>
+  <div class="meta-line">Owner: Luiz · Prazo: opcional</div>
+  <div class="action">Esses 2 pontos foram desligados quando você optou por remover o telefone do site. Pra recuperar: voltar com 1 nº de tracking GHL exibido no header. Se a decisão de "só form + email" continua, ignore esses 2 pts e a meta vira 98/100.</div>
+</div>
+
+<h2>Resumo</h2>
+<p style="background:#f0fdf4;padding:12px 16px;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0 0;">
+<strong>Site em 88/100 (faixa verde).</strong> 5 dos 12 pts pendentes destravam quando chegarem 5 reviews reais no Google. 2 pts dependem de você (1 número MA Corp + 1 lead-teste). 2 pts são opcionais (call tracking que você desligou). 3 pts são tarefas recorrentes da Rhaideline.
 </p>
-
-<div class="footer">
-  Galaxy IT &amp; Marketing LLC · Massachusetts Registered Business · Founded 2007<br>
-  186 Main St Ste 20, Marlborough MA 01752 · info@galaxyinfo.us · galaxyinfo.us
-</div>
 
 </body>
 </html>
