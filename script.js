@@ -70,11 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -40px 0px'
+      threshold: 0.05,
+      rootMargin: '0px 0px 100px 0px'
     });
 
     animatedElements.forEach(el => observer.observe(el));
+
+    // Safety net: if anything is still hidden after 2 seconds (e.g. observer stalled
+    // on long pages like /areas with 1200+ city links), force-show everything.
+    setTimeout(() => {
+      animatedElements.forEach(el => el.classList.add('visible'));
+    }, 2000);
   } else {
     // Fallback: just show everything
     animatedElements.forEach(el => el.classList.add('visible'));
