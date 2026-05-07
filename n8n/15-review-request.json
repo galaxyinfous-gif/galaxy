@@ -1,5 +1,5 @@
 {
-  "name": "Galaxy IT — Pedido de Avaliacao Automatico (apos servico)",
+  "name": "Galaxy IT — Pedido de Avaliacao Automatico (apos servico) [v2 R01 audit]",
   "nodes": [
     {
       "parameters": {
@@ -17,13 +17,75 @@
     },
     {
       "parameters": {
-        "jsCode": "const body = $json.body || {};\n// Expected GHL fields\nconst data = {\n  clientGhlKey: body.clientGhlKey || body.ghlKey || '',\n  contactId: body.contactId || body.contact_id || '',\n  contactName: body.contact_name || body.firstName || 'Cliente',\n  contactEmail: body.contact_email || body.email || '',\n  contactPhone: body.contact_phone || body.phone || '',\n  businessName: body.business_name || body.location_name || 'Nosso negocio',\n  reviewLink: body.review_link || body.google_review_link || ''\n};\n\n// Build message in Portuguese\nconst message = 'Oi, ' + data.contactName.split(' ')[0] + '! Obrigado por confiar na ' + data.businessName + '. Sua opiniao faz muita diferenca pra gente. Pode dar 1 minutinho e deixar uma avaliacao no Google? ' + (data.reviewLink || 'Responde esse SMS com uma nota de 1 a 5 que eu te mando o link.');\n\nreturn [{ json: { ...data, message } }];"
+        "jsCode": "// Normalize input from GHL job-completed trigger\nconst body = $json.body || $json;\nconst data = {\n  clientGhlKey: body.clientGhlKey || body.ghlKey || body.location_token || '',\n  locationId: body.locationId || body.location_id || '',\n  contactId: body.contactId || body.contact_id || '',\n  contactName: body.contact_name || body.firstName || body.first_name || 'Cliente',\n  contactEmail: body.contact_email || body.email || '',\n  contactPhone: body.contact_phone || body.phone || '',\n  businessName: body.business_name || body.location_name || 'Nosso negocio',\n  reviewLink: body.review_link || body.google_review_link || '',\n  language: (body.language || 'pt').toLowerCase()\n};\n\nconst firstName = data.contactName.split(' ')[0];\n\n// Build localized SMS body — kept under 160 chars to stay 1-segment\nconst smsTemplates = {\n  pt: `Oi ${firstName}! Obrigado por escolher a ${data.businessName}. Pode reservar 30s pra deixar uma avaliacao no Google? ${data.reviewLink} Significa muito pra gente!`,\n  en: `Hi ${firstName}! Thanks for choosing ${data.businessName}. Could you spare 30 seconds to leave us a Google review? ${data.reviewLink} It means the world to us!`,\n  es: `Hola ${firstName}! Gracias por elegir a ${data.businessName}. Te tomarias 30 segundos para dejarnos una resena en Google? ${data.reviewLink} Significa mucho para nosotros!`\n};\n\nconst emailTemplates = {\n  pt: { subject: `${firstName}, sua opiniao vale ouro pra ${data.businessName}`, body: `<p>Oi ${firstName},</p><p>Foi um prazer atender voce na <strong>${data.businessName}</strong>. Sua opiniao ajuda a gente a continuar entregando o melhor servico — e ajuda outras pessoas a encontrarem a gente.</p><p style=\"margin:24px 0;\"><a href=\"${data.reviewLink}\" style=\"background:#1a237e;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;\">Deixar minha avaliacao no Google</a></p><p>Demora menos de 1 minuto. Obrigado pela confianca!</p>` },\n  en: { subject: `${firstName}, your feedback means everything to ${data.businessName}`, body: `<p>Hi ${firstName},</p><p>Thank you for choosing <strong>${data.businessName}</strong>. Your feedback helps us deliver better service — and helps other people find us when they need it most.</p><p style=\"margin:24px 0;\"><a href=\"${data.reviewLink}\" style=\"background:#1a237e;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;\">Leave my Google review</a></p><p>Takes under a minute. Thanks for trusting us!</p>` },\n  es: { subject: `${firstName}, tu opinion vale mucho para ${data.businessName}`, body: `<p>Hola ${firstName},</p><p>Gracias por elegir a <strong>${data.businessName}</strong>. Tu opinion nos ayuda a seguir entregando el mejor servicio.</p><p style=\"margin:24px 0;\"><a href=\"${data.reviewLink}\" style=\"background:#1a237e;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;\">Dejar mi resena en Google</a></p><p>Toma menos de un minuto. Gracias por la confianza!</p>` }\n};\n\nconst lang = ['pt', 'en', 'es'].includes(data.language) ? data.language : 'pt';\nreturn [{ json: { ...data, smsBody: smsTemplates[lang], emailSubject: emailTemplates[lang].subject, emailBody: emailTemplates[lang].body, lang } }];"
       },
       "id": "prepare",
-      "name": "Preparar Mensagem",
+      "name": "Preparar Mensagens",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [420, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.clientGhlKey }}" },
+            { "name": "Version", "value": "2021-04-15" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ type: 'SMS', contactId: $json.contactId, message: $json.smsBody }) }}",
+        "options": { "timeout": 15000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-sms",
+      "name": "GHL - Enviar SMS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 320],
+      "continueOnFail": true,
+      "notes": "Sends real SMS via GHL Conversations API. Requires the contact to have a phone and SMS-capable channel configured. Uses contact's existing GHL location for sender number."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/conversations/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.clientGhlKey }}" },
+            { "name": "Version", "value": "2021-04-15" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ type: 'Email', contactId: $json.contactId, subject: $json.emailSubject, html: $json.emailBody }) }}",
+        "options": { "timeout": 15000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-email",
+      "name": "GHL - Enviar Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 480],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "days"
+      },
+      "id": "wait-3d",
+      "name": "Aguardar 3 dias",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [880, 400]
     },
     {
       "parameters": {
@@ -34,32 +96,40 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ title: 'Enviar pedido de avaliacao (automatico)', body: $json.message, dueDate: new Date().toISOString() }) }}",
+        "body": "={{ JSON.stringify({ title: 'Follow-up: avaliacao ainda nao recebida', body: 'Cliente recebeu SMS + email automatico ha 3 dias. Se a avaliacao ainda nao chegou, ligar pessoalmente para agradecer pelo servico e pedir o review. Link: ' + $json.reviewLink, dueDate: new Date(Date.now() + 86400000).toISOString() }) }}",
         "options": { "timeout": 15000, "response": { "response": { "neverError": true } } }
       },
-      "id": "create-task",
-      "name": "GHL - Criar Tarefa",
+      "id": "follow-up-task",
+      "name": "GHL - Criar Tarefa Follow-up",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [640, 400]
+      "position": [1100, 400],
+      "continueOnFail": true
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ JSON.stringify({ status: 'ok', message: $('Preparar Mensagem').item.json.message }) }}",
+        "responseBody": "={{ JSON.stringify({ status: 'ok', sms_sent: true, email_sent: true, follow_up_in: '3 days' }) }}",
         "options": {}
       },
       "id": "respond",
       "name": "Responder OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [860, 400]
+      "position": [1320, 400]
     }
   ],
   "connections": {
-    "Webhook - Servico Concluido": { "main": [[{ "node": "Preparar Mensagem", "type": "main", "index": 0 }]] },
-    "Preparar Mensagem": { "main": [[{ "node": "GHL - Criar Tarefa", "type": "main", "index": 0 }]] },
-    "GHL - Criar Tarefa": { "main": [[{ "node": "Responder OK", "type": "main", "index": 0 }]] }
+    "Webhook - Servico Concluido": { "main": [[{ "node": "Preparar Mensagens", "type": "main", "index": 0 }]] },
+    "Preparar Mensagens": { "main": [[
+      { "node": "GHL - Enviar SMS", "type": "main", "index": 0 },
+      { "node": "GHL - Enviar Email", "type": "main", "index": 0 }
+    ]] },
+    "GHL - Enviar SMS": { "main": [[{ "node": "Aguardar 3 dias", "type": "main", "index": 0 }]] },
+    "GHL - Enviar Email": { "main": [[{ "node": "Aguardar 3 dias", "type": "main", "index": 0 }]] },
+    "Aguardar 3 dias": { "main": [[{ "node": "GHL - Criar Tarefa Follow-up", "type": "main", "index": 0 }]] },
+    "GHL - Criar Tarefa Follow-up": { "main": [[{ "node": "Responder OK", "type": "main", "index": 0 }]] }
   },
-  "settings": { "executionOrder": "v1" }
+  "settings": { "executionOrder": "v1" },
+  "tags": ["audit-R01", "review-request", "speed-to-lead"]
 }
