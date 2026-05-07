@@ -71,13 +71,10 @@ if (processar) {
     const t = new Date(c.dateAdded).getTime();
     return t >= thirtyAgoMs && t <= yesterdayEndMs;
   });
-  // Real leads = form submissions from the site (exclude chat widget and Direct)
-  const last30 = allLast30.filter(c => {
-    const src = (c.source || '').toLowerCase();
-    return src.includes('form') || src.includes('site');
-  });
+  // ALL new contacts in the last 30 days — no filter (user sees everything)
+  const last30 = allLast30;
   const sources30d = {};
-  last30.forEach(c => { const s = c.source || c.tags?.[0] || 'Direto'; sources30d[s] = (sources30d[s]||0)+1; });
+  last30.forEach(c => { const s = c.source || 'Sem fonte definida'; sources30d[s] = (sources30d[s]||0)+1; });
   const sourcesList = Object.entries(sources30d).sort((a,b)=>b[1]-a[1]);
   const topSources = sourcesList.slice(0,5).map(([k,v])=>k+' ('+v+')').join(', ') || 'Nenhum lead novo';
   const sourcesDetailed = sourcesList.map(([k,v])=>'- ' + k + ': ' + v + ' leads').join('\\n') || '- Nenhum lead novo no periodo';
