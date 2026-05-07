@@ -3797,3 +3797,34 @@ h6 {
         bottom: 90px;
     }
 }
+
+/* ======= Galaxy IT custom lead form (replaces LeadConnector iframe) ======= */
+.lead-form { display: flex; flex-direction: column; gap: 14px; max-width: 540px; }
+.lead-form .form-row { display: flex; flex-direction: column; gap: 6px; }
+.lead-form label { font-weight: 600; color: #1a237e; font-size: 14px; }
+.lead-form .req { color: #dc2626; }
+.lead-form input[type="text"],
+.lead-form input[type="email"],
+.lead-form select,
+.lead-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+    color: #1f2937;
+    transition: border-color 0.18s, box-shadow 0.18s;
+}
+.lead-form input:focus,
+.lead-form select:focus,
+.lead-form textarea:focus {
+    outline: none;
+    border-color: #1a237e;
+    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.12);
+}
+.lead-form textarea { resize: vertical; min-height: 90px; }
+.lead-form .field-hint { font-size: 12px; color: #6b7280; line-height: 1.5; }
+.lead-form button[type="submit"] { margin-top: 6px; padding: 14px 28px; font-size: 16px; cursor: pointer; }
+.lead-form button[type="submit"]:disabled { opacity: 0.7; cursor: not-allowed; }
