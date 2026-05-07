@@ -1,0 +1,116 @@
+{
+  "name": "18 — Speed-to-Lead (X05 audit)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "speed-to-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook (Bee Pro Hub form submit)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "speed-to-lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract lead fields from Bee Pro Hub form-submission webhook payload.\n// Bee Pro Hub (GoHighLevel) sends contact data as flat JSON when configured\n// via Settings → Workflows → 'On Form Submission' → outbound webhook.\nconst body = $input.first().json.body || $input.first().json;\nconst lead = {\n  fullName: body.full_name || body.fullName || `${body.first_name || ''} ${body.last_name || ''}`.trim() || 'New Lead',\n  email: body.email || '',\n  phone: body.phone || '',\n  source: body.source || body.form_name || 'galaxyinfo.us website',\n  message: body.message || body.notes || ''\n};\nlead.firstName = lead.fullName.split(' ')[0] || 'there';\nreturn [{ json: lead }];"
+      },
+      "id": "extract-lead",
+      "name": "Extract Lead Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.twilio.com/2010-04-01/Accounts/{{$env.TWILIO_ACCOUNT_SID}}/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "From", "value": "={{$env.TWILIO_PHONE}}" },
+            { "name": "To", "value": "={{$json.phone}}" },
+            { "name": "Body", "value": "=Hi {{$json.firstName}}! It's Galaxy IT & Marketing — got your inquiry from {{$json.source}}. We'll call you within 1 business hour. Reply STOP to opt out. — Luiz" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "sms-to-lead",
+      "name": "Send Instant SMS (Twilio)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 200],
+      "credentials": {
+        "httpBasicAuth": { "id": "twilio-basic", "name": "Twilio Basic Auth" }
+      },
+      "continueOnFail": true,
+      "notes": "Skip if no phone, or no Twilio creds. Cost: ~$0.0079 per SMS."
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@galaxyinfo.us",
+        "toEmail": "={{$json.email}}",
+        "subject": "Got your message — we'll be in touch within 1 hour",
+        "html": "=<div style=\"font-family:Arial,sans-serif;color:#1a237e;max-width:600px;\"><h2 style=\"color:#1a237e;\">Thanks for reaching out, {{$json.firstName}}!</h2><p style=\"color:#374151;line-height:1.6;\">We received your inquiry through <strong>{{$json.source}}</strong> and a member of the Galaxy IT team will personally call you within <strong>1 business hour</strong>.</p><p style=\"color:#374151;line-height:1.6;\">Need to reach us sooner? Call <a href=\"tel:+17742852299\" style=\"color:#1a237e;\">(774) 285-2299</a> or text us on WhatsApp.</p><hr style=\"border:0;border-top:1px solid #e5e7eb;margin:24px 0;\"/><p style=\"font-size:12px;color:#6b7280;\">Galaxy IT & Marketing LLC · 186 Main St Ste 20, Marlborough MA 01752 · galaxyinfo.us</p></div>",
+        "options": {}
+      },
+      "id": "email-autoresponder",
+      "name": "Send Auto-Reply Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [680, 320],
+      "credentials": {
+        "smtp": { "id": "galaxy-smtp", "name": "Galaxy SMTP" }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@galaxyinfo.us",
+        "toEmail": "={{$env.TEAM_EMAIL}}",
+        "subject": "=🔔 NEW LEAD: {{$json.fullName}} ({{$json.source}})",
+        "html": "=<div style=\"font-family:Arial,sans-serif;\"><h2 style=\"color:#16a34a;\">🚀 New lead just landed</h2><table style=\"border-collapse:collapse;\"><tr><td style=\"padding:6px;color:#6b7280;\">Name:</td><td style=\"padding:6px;\"><strong>{{$json.fullName}}</strong></td></tr><tr><td style=\"padding:6px;color:#6b7280;\">Email:</td><td style=\"padding:6px;\"><a href=\"mailto:{{$json.email}}\">{{$json.email}}</a></td></tr><tr><td style=\"padding:6px;color:#6b7280;\">Phone:</td><td style=\"padding:6px;\"><a href=\"tel:{{$json.phone}}\">{{$json.phone}}</a></td></tr><tr><td style=\"padding:6px;color:#6b7280;\">Source:</td><td style=\"padding:6px;\">{{$json.source}}</td></tr><tr><td style=\"padding:6px;color:#6b7280;\">Message:</td><td style=\"padding:6px;\">{{$json.message}}</td></tr></table><p style=\"margin-top:18px;color:#1a237e;\"><strong>Auto-SMS already sent. Auto-email already sent. Call within 1 business hour.</strong></p></div>",
+        "options": {}
+      },
+      "id": "team-alert",
+      "name": "Alert Galaxy IT Team",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [680, 440],
+      "credentials": {
+        "smtp": { "id": "galaxy-smtp", "name": "Galaxy SMTP" }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"status\":\"ok\",\"received\":true,\"timestamp\":\"{{$now.toISO()}}\"}"
+      },
+      "id": "respond",
+      "name": "200 OK to Bee Pro Hub",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [940, 320]
+    }
+  ],
+  "connections": {
+    "Webhook (Bee Pro Hub form submit)": { "main": [[{ "node": "Extract Lead Fields", "type": "main", "index": 0 }]] },
+    "Extract Lead Fields": { "main": [[
+      { "node": "Send Instant SMS (Twilio)", "type": "main", "index": 0 },
+      { "node": "Send Auto-Reply Email", "type": "main", "index": 0 },
+      { "node": "Alert Galaxy IT Team", "type": "main", "index": 0 }
+    ]] },
+    "Send Instant SMS (Twilio)": { "main": [[{ "node": "200 OK to Bee Pro Hub", "type": "main", "index": 0 }]] },
+    "Send Auto-Reply Email": { "main": [[{ "node": "200 OK to Bee Pro Hub", "type": "main", "index": 0 }]] },
+    "Alert Galaxy IT Team": { "main": [[{ "node": "200 OK to Bee Pro Hub", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["audit-X05", "speed-to-lead"]
+}

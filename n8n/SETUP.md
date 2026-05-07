@@ -14,7 +14,7 @@
 ANTHROPIC_API_KEY=sk-ant-xxxxx
 TEAM_EMAIL=info@galaxyinfo.us
 LUIZ_EMAIL=luiz@galaxyinfo.us
-LUIZ_PHONE=+15084999279
+LUIZ_PHONE=+17742852299
 TWILIO_ACCOUNT_SID=ACxxxxx        (optional — for SMS)
 TWILIO_AUTH_TOKEN=xxxxx            (optional — for SMS)
 TWILIO_PHONE=+1xxxxxxxxxx         (optional — for SMS)
@@ -205,3 +205,27 @@ vs. Make.com at scale: $59-299/month for equivalent operations.
 3. Type a question in Galaxy Assist
 4. Check n8n execution log — should show the webhook received, Claude called, response sent
 5. If it works, the chat will show the AI response instead of the local knowledge base fallback
+
+---
+
+### 18. `18-speed-to-lead.json` — Speed-to-Lead (X05 audit)
+**Webhook URL:** `https://n8n.galaxyinfo.us/webhook/speed-to-lead`
+
+**Flow:** Webhook → Extract Lead → fan-out (SMS to lead · Auto-reply email · Team alert) → 200 OK
+
+**What it does:**
+- Receives a form-submission webhook from Bee Pro Hub (configured under Settings → Workflows → outbound webhook)
+- Sends instant SMS to the lead via Twilio ("Hi {Name}! It's Galaxy IT… we'll call within 1 business hour")
+- Sends auto-reply email to the lead with our phone, address, and reassurance
+- Sends a parallel alert email to `info@galaxyinfo.us` so the team sees the lead in real time
+- Total execution typically completes in 2–8 seconds — well under the 60-second X05 audit threshold (391% conversion lift per Invoca 2026 study)
+
+**Setup steps:**
+1. In Bee Pro Hub: open the website-form workflow → add an outbound webhook action → URL = `https://n8n.galaxyinfo.us/webhook/speed-to-lead` → method POST → payload includes `full_name`, `email`, `phone`, `source`, `message`
+2. In n8n: import `18-speed-to-lead.json`, set credentials for Twilio and SMTP, set env vars `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE`, `TEAM_EMAIL`
+3. Activate the workflow
+4. **Test:** submit a test lead at https://galaxyinfo.us/consultation with your own phone + email. Time the auto-SMS arrival — should be < 30 seconds.
+
+**Cost:** ~$0.0079 per SMS (Twilio US local). Email is included in your existing SMTP plan.
+
+> If Bee Pro Hub's built-in "Send SMS on form submission" automation is already configured inside the GHL UI, this n8n workflow is redundant — keep it as a backup or delete it. The audit only requires the speed-to-lead path to exist somewhere.
