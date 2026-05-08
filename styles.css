@@ -3791,11 +3791,34 @@ h6 {
 @media (max-width: 768px) {
     .sticky-call-mobile {
         display: flex;
+        bottom: 20px;
+        right: 20px;
     }
-    /* Avoid overlap with WhatsApp floating widget if present */
-    .sticky-call-mobile {
-        bottom: 90px;
+    /* Stack get-support pill ABOVE the call FAB so they never overlap */
+    .get-support-btn {
+        bottom: 95px !important;
+        right: 20px !important;
     }
+}
+
+/* Header phone link (desktop) — small visible phone next to nav CTA */
+.nav-tel {
+    display: none;
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 14px;
+    white-space: nowrap;
+    transition: color 0.18s;
+}
+.nav-tel i {
+    color: #16a34a;
+    margin-right: 6px;
+}
+.nav-tel:hover { color: #16a34a; }
+@media (min-width: 992px) {
+    .nav-tel { display: inline-flex; align-items: center; }
 }
 
 /* ======= Galaxy IT custom lead form (replaces LeadConnector iframe) ======= */
