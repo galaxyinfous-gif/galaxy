@@ -3801,7 +3801,7 @@ h6 {
     }
 }
 
-/* Header phone link (desktop) — small visible phone next to nav CTA */
+/* Header phone link — desktop only ≥1024px; on mobile menu it inherits open-menu styling */
 .nav-tel {
     display: none;
     color: var(--primary-dark);
@@ -3812,13 +3812,60 @@ h6 {
     white-space: nowrap;
     transition: color 0.18s;
 }
-.nav-tel i {
-    color: #16a34a;
-    margin-right: 6px;
-}
+.nav-tel i { color: #16a34a; margin-right: 6px; }
 .nav-tel:hover { color: #16a34a; }
-@media (min-width: 992px) {
+@media (min-width: 1024px) {
     .nav-tel { display: inline-flex; align-items: center; }
+}
+/* When hamburger menu opens (<1024px), show .nav-tel inside the open menu styled for dark bg */
+@media (max-width: 1023px) {
+    .nav-links.active .nav-tel {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #ffd700;
+        font-size: 1.1rem;
+        margin-right: 0;
+        padding: 10px 18px;
+        border: 1px solid rgba(255,215,0,0.5);
+        border-radius: 999px;
+    }
+    .nav-links.active .nav-tel i { color: #ffd700; }
+}
+
+/* Inline mid-page CTA bar (band that breaks long pages with a phone+form callout) */
+.cta-band {
+    background: linear-gradient(135deg, #1a237e, #3b4bb8);
+    color: #fff;
+    padding: 32px 24px;
+    border-radius: 16px;
+    text-align: center;
+    margin: 36px auto;
+    max-width: 980px;
+    box-shadow: 0 12px 32px rgba(26,35,126,0.18);
+}
+.cta-band h3 { color: #fff; margin: 0 0 8px; font-size: 22px; }
+.cta-band p { margin: 0 0 18px; color: rgba(255,255,255,0.92); font-size: 15px; }
+.cta-band-actions {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+}
+.cta-band-actions .btn-primary {
+    background: #ffd700; color: #1a237e; border-color: #ffd700; font-weight: 700;
+}
+.cta-band-actions .btn-tel {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 26px; border-radius: 999px;
+    background: transparent; color: #ffd700;
+    border: 2px solid #ffd700; font-weight: 700; text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+}
+.cta-band-actions .btn-tel:hover { background: #ffd700; color: #1a237e; }
+@media (max-width: 600px) {
+    .cta-band { padding: 24px 18px; margin: 28px 12px; }
+    .cta-band h3 { font-size: 18px; }
+    .cta-band-actions { flex-direction: column; }
+    .cta-band-actions .btn-primary,
+    .cta-band-actions .btn-tel { width: 100%; justify-content: center; }
 }
 
 /* ======= Galaxy IT custom lead form (replaces LeadConnector iframe) ======= */
