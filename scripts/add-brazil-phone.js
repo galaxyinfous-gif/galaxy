@@ -1,11 +1,11 @@
-// Add Brazil phone +55 (32) 2299-0041 in all places where the US phone was previously removed.
+// Add Brazil phone +55 (35) 2299-0041 in all places where the US phone was previously removed.
 // Coexists with the email channel — email stays as primary, BR phone added alongside.
 const fs = require('fs');
 const path = require('path');
 
-const BR_DISPLAY = '(32) 2299-0041';
-const BR_TEL = 'tel:+553222990041';
-const BR_WA = 'https://wa.me/553222990041';
+const BR_DISPLAY = '(35) 2299-0041';
+const BR_TEL = 'tel:+553522990041';
+const BR_WA = 'https://wa.me/553522990041';
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -27,7 +27,7 @@ for (const fp of files) {
   h = h.replace(/(\s*"email"\s*:\s*"info@galaxyinfo\.us"\s*,\s*\n\s*)("address")/g, (m, pre, addr) => {
     if (h.includes('"telephone"')) return m;
     stats.schema++;
-    return pre + '"telephone": "+55-32-2299-0041",\n    ' + addr;
+    return pre + '"telephone": "+55-35-2299-0041",\n    ' + addr;
   });
 
   // 2) Append BR phone to meta descriptions that ended in "Email info@galaxyinfo.us." (and have room)
