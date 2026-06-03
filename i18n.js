@@ -157,9 +157,6 @@ const translations = {
         insta_subtitle: "Stay updated with our latest projects, tips, and client success stories.",
 
         // WhatsApp Widget
-        wpp_online: "Online",
-        wpp_greeting: "Hi! How can we help you today?",
-        wpp_placeholder: "Type a message...",
 
         // About Page
         about_badge: "Our Story",
@@ -828,9 +825,6 @@ const translations = {
         insta_subtitle: "Mantente al día con nuestros últimos proyectos, consejos e historias de éxito de clientes.",
 
         // WhatsApp Widget
-        wpp_online: "En línea",
-        wpp_greeting: "¡Hola! ¿Cómo podemos ayudarte hoy?",
-        wpp_placeholder: "Escribe un mensaje...",
 
         // About Page
         about_badge: "Nuestra Historia",
@@ -1500,9 +1494,6 @@ const translations = {
         insta_subtitle: "Fique por dentro dos nossos últimos projetos, dicas e histórias de sucesso dos clientes.",
 
         // WhatsApp Widget
-        wpp_online: "Online",
-        wpp_greeting: "Olá! Como podemos ajudar você hoje?",
-        wpp_placeholder: "Digite uma mensagem...",
 
         // About Page
         about_badge: "Nossa História",

@@ -1766,29 +1766,10 @@ ${otherServices.map((osKey, i) => {
 
     <!-- WhatsApp Chat Widget -->
     <div class="whatsapp-widget" id="whatsappWidget">
-        <div class="whatsapp-popup">
-            <div class="whatsapp-popup-header">
-                <div class="whatsapp-popup-avatar">G</div>
-                <div class="whatsapp-popup-info">
-                    <h4>Galaxy IT & Marketing</h4>
-                    <p data-i18n="wpp_online">Online</p>
-                </div>
-            </div>
-            <div class="whatsapp-popup-body">
-                <div class="whatsapp-popup-msg">
-                    <span data-i18n="wpp_greeting">Hi! How can we help you today?</span>
-                    <small>Galaxy IT</small>
-                </div>
-            </div>
-            <div class="whatsapp-popup-footer">
-                <input type="text" id="whatsappMsg" data-i18n-placeholder="wpp_placeholder" placeholder="Type a message...">
-                <button id="whatsappSend" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-        <button class="whatsapp-btn" id="whatsappToggle" aria-label="Chat on WhatsApp">
-            <i class="fab fa-whatsapp"></i>
-            <i class="fas fa-times"></i>
-        </button>
+        
+            
+            
+        
     </div>
 
     <!-- Page-specific translations (MUST load before i18n.js) -->
