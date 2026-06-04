@@ -3776,7 +3776,7 @@ h6 {
    Fixed bottom-right phone CTA visible on all mobile views
    ============================================ */
 .sticky-call-mobile {
-    display: none;
+    display: flex;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -3807,11 +3807,6 @@ h6 {
     100% { box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45), 0 0 0 0 rgba(22, 163, 74, 0); }
 }
 @media (max-width: 768px) {
-    .sticky-call-mobile {
-        display: flex;
-        bottom: 20px;
-        right: 20px;
-    }
     /* Stack get-support pill ABOVE the call FAB so they never overlap */
     .get-support-btn {
         bottom: 95px !important;
