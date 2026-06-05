@@ -671,6 +671,18 @@ const translations = {
         support_stat3: "available anytime — no waiting for business hours",
         support_get_btn: "Get Support",
         footer_support: "Help Center",
+
+        // Global CTA strips/bands (Brazil phone)
+        cta_phone_btn: "(35) 2299-0041",
+        cta_free_btn: "Free Assessment",
+        cta_band_h3: "Ready to grow with Galaxy IT?",
+        cta_band_p: "Free 30-minute assessment. No card, no contract.",
+        cta_strip_problem: "Recognize these problems? Let's fix them.",
+        cta_strip_why: "Ready for results like these?",
+        cta_strip_testimonials: "Want to be the next success story?",
+        cta_strip_founders: "Talk to Galaxy IT directly.",
+        cta_strip_ba: "Want this transformation for your business?",
+        cta_strip_faq: "Got a question? Call or message us.",
     },
 
     es: {
@@ -1339,6 +1351,18 @@ const translations = {
         support_stat3: "disponible siempre — sin esperar horario de oficina",
         support_get_btn: "Obtener Soporte",
         footer_support: "Centro de Ayuda",
+
+        // Global CTA strips/bands
+        cta_phone_btn: "(35) 2299-0041",
+        cta_free_btn: "Evaluación Gratis",
+        cta_band_h3: "¿Listo para crecer con Galaxy IT?",
+        cta_band_p: "Evaluación gratuita de 30 minutos. Sin tarjeta, sin contrato.",
+        cta_strip_problem: "¿Reconoces estos problemas? Vamos a resolverlos.",
+        cta_strip_why: "¿Listo para resultados como estos?",
+        cta_strip_testimonials: "¿Quieres ser el próximo caso de éxito?",
+        cta_strip_founders: "Habla directamente con Galaxy IT.",
+        cta_strip_ba: "¿Quieres esta transformación en tu negocio?",
+        cta_strip_faq: "¿Otra duda? Llama o envía un mensaje.",
     },
 
     pt: {
@@ -2008,6 +2032,18 @@ const translations = {
         support_stat3: "disponível sempre — sem esperar horário comercial",
         support_get_btn: "Obter Suporte",
         footer_support: "Central de Ajuda",
+
+        // Global CTA strips/bands
+        cta_phone_btn: "(35) 2299-0041",
+        cta_free_btn: "Avaliação Grátis",
+        cta_band_h3: "Pronto para crescer com a Galaxy IT?",
+        cta_band_p: "Avaliação gratuita de 30 minutos. Sem cartão, sem contrato.",
+        cta_strip_problem: "Reconhece esses problemas? Vamos resolver.",
+        cta_strip_why: "Pronto pra ter resultados como esses?",
+        cta_strip_testimonials: "Quer ser o próximo case de sucesso?",
+        cta_strip_founders: "Fale direto com a Galaxy IT.",
+        cta_strip_ba: "Quer essa transformação no seu negócio?",
+        cta_strip_faq: "Outra dúvida? Liga ou escreve.",
     }
 };
 
