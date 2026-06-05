@@ -401,6 +401,13 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 32px;
+}
+@media (min-width: 1366px) {
+  .header nav { margin-left: 40px; }
+}
+@media (min-width: 1600px) {
+  .header nav { margin-left: 64px; }
 }
 
 .logo {
