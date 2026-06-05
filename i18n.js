@@ -707,6 +707,28 @@ const translations = {
         cta2_h3: "Want numbers like these for your business?",
         cta2_p: "30 minutes on the phone or via form — we'll show you exactly where leads are leaking and how to fix it.",
         cta2_btn: "Send a Message",
+        // Reviews page
+        rev_h1: "Numbers from real Galaxy clients",
+        rev_hero_p: "The kind of growth our partners see month after month. Honest data straight from Google Analytics, Search Console, and the Bee Pro Hub CRM.",
+        rev_perf_h2: "Performance per client (last 30 days)",
+        rev_perf_p: "Live numbers from monthly reports — Google Search Console + Bee Pro Hub CRM.",
+        // Tutorials page
+        tut_h1: "Video Tutorials",
+        tut_p: "Step-by-step videos for every feature. Click a category to see all tutorials.",
+        tut_cat_contacts: "Contacts & CRM",
+        tut_cat_convos: "Conversations",
+        tut_cat_calendar: "Calendars & Appointments",
+        tut_cat_pipelines: "Opportunities & Pipelines",
+        tut_cat_payments: "Payments",
+        tut_cat_automations: "Automations & Workflows",
+        tut_cat_sites: "Sites & Funnels",
+        tut_cat_marketing: "Marketing",
+        // Areas service categories
+        cat_crm: "CRM & Automation",
+        cat_seo: "SEO & Marketing",
+        cat_it: "IT Support",
+        // Support
+        sup_assist_name: "Galaxy Assist",
     },
 
     es: {
@@ -1411,6 +1433,28 @@ const translations = {
         cta2_h3: "¿Quieres números como estos para tu negocio?",
         cta2_p: "30 minutos por teléfono o por formulario — te mostramos exactamente dónde se están perdiendo leads y cómo solucionarlo.",
         cta2_btn: "Enviar Mensaje",
+        // Reviews page (ES)
+        rev_h1: "Números de clientes reales de Galaxy",
+        rev_hero_p: "El tipo de crecimiento que nuestros socios ven mes tras mes. Datos honestos directos de Google Analytics, Search Console y el CRM Bee Pro Hub.",
+        rev_perf_h2: "Rendimiento por cliente (últimos 30 días)",
+        rev_perf_p: "Números en vivo de los reportes mensuales — Google Search Console + Bee Pro Hub CRM.",
+        // Tutorials (ES)
+        tut_h1: "Videos Tutoriales",
+        tut_p: "Videos paso a paso para cada función. Haz clic en una categoría para ver todos los tutoriales.",
+        tut_cat_contacts: "Contactos y CRM",
+        tut_cat_convos: "Conversaciones",
+        tut_cat_calendar: "Calendarios y Citas",
+        tut_cat_pipelines: "Oportunidades y Pipelines",
+        tut_cat_payments: "Pagos",
+        tut_cat_automations: "Automatizaciones y Workflows",
+        tut_cat_sites: "Sitios y Embudos",
+        tut_cat_marketing: "Marketing",
+        // Areas service categories (ES)
+        cat_crm: "CRM y Automatización",
+        cat_seo: "SEO y Marketing",
+        cat_it: "Soporte IT",
+        // Support (ES)
+        sup_assist_name: "Galaxy Assist",
     },
 
     pt: {
@@ -2116,6 +2160,28 @@ const translations = {
         cta2_h3: "Quer números assim no seu negócio?",
         cta2_p: "30 minutos por telefone ou por formulário — mostramos exatamente onde os leads estão escapando e como consertar.",
         cta2_btn: "Enviar Mensagem",
+        // Reviews page (PT)
+        rev_h1: "Números de clientes reais da Galaxy",
+        rev_hero_p: "O tipo de crescimento que nossos parceiros veem mês após mês. Dados honestos direto do Google Analytics, Search Console e do CRM Bee Pro Hub.",
+        rev_perf_h2: "Desempenho por cliente (últimos 30 dias)",
+        rev_perf_p: "Números ao vivo dos relatórios mensais — Google Search Console + Bee Pro Hub CRM.",
+        // Tutorials (PT)
+        tut_h1: "Vídeo Tutoriais",
+        tut_p: "Vídeos passo a passo pra cada funcionalidade. Clique numa categoria pra ver todos os tutoriais.",
+        tut_cat_contacts: "Contatos e CRM",
+        tut_cat_convos: "Conversas",
+        tut_cat_calendar: "Calendários e Agendamentos",
+        tut_cat_pipelines: "Oportunidades e Pipelines",
+        tut_cat_payments: "Pagamentos",
+        tut_cat_automations: "Automações e Workflows",
+        tut_cat_sites: "Sites e Funis",
+        tut_cat_marketing: "Marketing",
+        // Areas service categories (PT)
+        cat_crm: "CRM e Automação",
+        cat_seo: "SEO e Marketing",
+        cat_it: "Suporte de TI",
+        // Support (PT)
+        sup_assist_name: "Galaxy Assist",
     }
 };
 
