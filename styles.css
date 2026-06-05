@@ -401,18 +401,12 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 24px;
   flex-wrap: nowrap;
 }
-.logo { margin-right: 16px !important; flex-shrink: 0; }
-.header nav { flex: 1 1 auto; min-width: 0; }
+.logo { flex-shrink: 0; }
+.header nav { flex-shrink: 1; }
 .lang-switcher { flex-shrink: 0; }
-@media (min-width: 1366px) {
-  .logo { margin-right: 32px !important; }
-}
-@media (min-width: 1600px) {
-  .logo { margin-right: 48px !important; }
-}
 
 .logo {
   display: flex;
@@ -541,7 +535,7 @@ h6 {
   transform: rotate(-45deg) translate(5px, -6px);
 }
 
-@media (max-width: 1365px) {
+@media (max-width: 1199px) {
   .menu-toggle {
     display: flex;
   }
@@ -3831,7 +3825,9 @@ h6 {
     }
 }
 
-/* Header phone link — desktop only ≥1024px; on mobile menu it inherits open-menu styling */
+/* Header phone link — ONLY visible inside the open hamburger menu.
+   On desktop, the floating sticky FAB (bottom-right) already shows the phone,
+   so the pill in the top nav was redundant + caused crowding issues. */
 .nav-tel {
     display: none !important;
     align-items: center;
@@ -3845,28 +3841,15 @@ h6 {
     border-radius: 999px;
     transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
-.nav-tel i {
-    color: #ffd700 !important;
-    margin-right: 6px;
-    font-size: 12px;
-}
+.nav-tel i { color: #ffd700 !important; margin-right: 6px; font-size: 12px; }
 .nav-tel::after { display: none !important; }
-.nav-tel:hover {
-    background: #ffd700;
-    color: #1a237e !important;
-    border-color: #ffd700;
-}
+.nav-tel:hover { background: #ffd700; color: #1a237e !important; border-color: #ffd700; }
 .nav-tel:hover i { color: #1a237e !important; }
-@media (min-width: 1366px) {
-    .nav-tel { display: inline-flex !important; }
-}
-/* When hamburger menu opens (<1366px), show .nav-tel inside the open menu */
-@media (max-width: 1365px) {
-    .nav-links.active .nav-tel {
-        display: inline-flex !important;
-        font-size: 1.1rem;
-        padding: 12px 22px;
-    }
+/* When hamburger menu opens, show .nav-tel inside the open menu only */
+.nav-links.active .nav-tel {
+    display: inline-flex !important;
+    font-size: 1.1rem;
+    padding: 12px 22px;
 }
 
 /* Inline mid-page CTA bar (band that breaks long pages with a phone+form callout) */
