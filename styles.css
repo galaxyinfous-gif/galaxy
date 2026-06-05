@@ -401,15 +401,17 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 20px;
+  flex-wrap: nowrap;
 }
-.logo { margin-right: 32px !important; }
+.logo { margin-right: 16px !important; flex-shrink: 0; }
+.header nav { flex: 1 1 auto; min-width: 0; }
+.lang-switcher { flex-shrink: 0; }
 @media (min-width: 1366px) {
-  .logo { margin-right: 56px !important; }
-  .header nav { margin-left: 16px !important; }
+  .logo { margin-right: 32px !important; }
 }
 @media (min-width: 1600px) {
-  .logo { margin-right: 80px !important; }
+  .logo { margin-right: 48px !important; }
 }
 
 .logo {
