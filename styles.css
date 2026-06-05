@@ -438,19 +438,25 @@ h6 {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
 }
-@media (min-width: 1280px) {
-  .nav-links { gap: 32px; }
+@media (min-width: 1366px) {
+  .nav-links { gap: 28px; }
+}
+@media (min-width: 1600px) {
+  .nav-links { gap: 36px; }
 }
 
 .nav-links a {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   transition: color var(--transition-fast);
   position: relative;
   white-space: nowrap;
+}
+@media (min-width: 1366px) {
+  .nav-links a { font-size: 0.95rem; }
 }
 
 .nav-links a::after {
@@ -524,7 +530,7 @@ h6 {
   transform: rotate(-45deg) translate(5px, -6px);
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1365px) {
   .menu-toggle {
     display: flex;
   }
@@ -3840,11 +3846,11 @@ h6 {
     border-color: #ffd700;
 }
 .nav-tel:hover i { color: #1a237e !important; }
-@media (min-width: 1200px) {
+@media (min-width: 1366px) {
     .nav-tel { display: inline-flex !important; }
 }
-/* When hamburger menu opens (<1200px), show .nav-tel inside the open menu */
-@media (max-width: 1199px) {
+/* When hamburger menu opens (<1366px), show .nav-tel inside the open menu */
+@media (max-width: 1365px) {
     .nav-links.active .nav-tel {
         display: inline-flex !important;
         font-size: 1.1rem;
