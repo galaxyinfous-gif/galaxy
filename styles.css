@@ -403,11 +403,13 @@ h6 {
   justify-content: space-between;
   gap: 32px;
 }
+.logo { margin-right: 32px !important; }
 @media (min-width: 1366px) {
-  .header nav { margin-left: 40px; }
+  .logo { margin-right: 56px !important; }
+  .header nav { margin-left: 16px !important; }
 }
 @media (min-width: 1600px) {
-  .header nav { margin-left: 64px; }
+  .logo { margin-right: 80px !important; }
 }
 
 .logo {
