@@ -3792,18 +3792,45 @@ h6 {
     bottom: 20px;
     right: 20px;
     z-index: 9998;
-    background: linear-gradient(135deg, #16a34a, #15803d);
+    background: linear-gradient(135deg, #1a237e, #3b4bb8);
     color: #fff !important;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45), 0 0 0 0 rgba(22, 163, 74, 0.7);
+    box-shadow: 0 8px 24px rgba(26, 35, 126, 0.45), 0 0 0 0 rgba(26, 35, 126, 0.7);
     align-items: center;
     justify-content: center;
     text-decoration: none;
     font-size: 26px;
     transition: transform 0.2s, box-shadow 0.2s;
     animation: stickyCallPulse 2.4s infinite;
+}
+
+/* Sticky WhatsApp FAB — stacks 76px above the phone FAB */
+.sticky-wa-mobile {
+    display: flex;
+    position: fixed;
+    bottom: 96px;
+    right: 20px;
+    z-index: 9998;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff !important;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0.7);
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 30px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: stickyWaPulse 2.4s infinite;
+}
+.sticky-wa-mobile:hover, .sticky-wa-mobile:active { transform: scale(1.05); }
+@keyframes stickyWaPulse {
+    0% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45), 0 0 0 16px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 .sticky-call-mobile:hover,
 .sticky-call-mobile:active {
