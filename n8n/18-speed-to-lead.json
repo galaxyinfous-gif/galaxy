@@ -57,7 +57,7 @@
         "fromEmail": "info@galaxyinfo.us",
         "toEmail": "={{$json.email}}",
         "subject": "Got your message — we'll be in touch within 1 hour",
-        "html": "=<div style=\"font-family:Arial,sans-serif;color:#1a237e;max-width:600px;\"><h2 style=\"color:#1a237e;\">Thanks for reaching out, {{$json.firstName}}!</h2><p style=\"color:#374151;line-height:1.6;\">We received your inquiry through <strong>{{$json.source}}</strong> and a member of the Galaxy IT team will personally call you within <strong>1 business hour</strong>.</p><p style=\"color:#374151;line-height:1.6;\">Need to reach us sooner? Call <a href=\"tel:+17742852299\" style=\"color:#1a237e;\">(774) 285-2299</a> or text us on WhatsApp.</p><hr style=\"border:0;border-top:1px solid #e5e7eb;margin:24px 0;\"/><p style=\"font-size:12px;color:#6b7280;\">Galaxy IT & Marketing LLC · 186 Main St Ste 20, Marlborough MA 01752 · galaxyinfo.us</p></div>",
+        "html": "=<div style=\"font-family:Arial,sans-serif;color:#1a237e;max-width:600px;\"><h2 style=\"color:#1a237e;\">Thanks for reaching out, {{$json.firstName}}!</h2><p style=\"color:#374151;line-height:1.6;\">We received your inquiry through <strong>{{$json.source}}</strong> and a member of the Galaxy IT team will personally call you within <strong>1 business hour</strong>.</p><p style=\"color:#374151;line-height:1.6;\">Need to reach us sooner? Call <a href=\"tel:+17742852299\" style=\"color:#1a237e;\">(774) 285-2299</a> or text us on WhatsApp.</p><hr style=\"border:0;border-top:1px solid #e5e7eb;margin:24px 0;\"/><p style=\"font-size:12px;color:#6b7280;\">Galaxy IT & Marketing LLC · 186 Main Street Suite 3, Marlborough MA 01752 · galaxyinfo.us</p></div>",
         "options": {}
       },
       "id": "email-autoresponder",
